@@ -18,7 +18,10 @@ pip install -r requirements.txt
 
 Перед запуском бота вам нужно создать файл `.env` в корневом каталоге проекта и добавить в него следующие переменные окружения:
 ```
-TELEGRAM_BOT_TOKEN=ваш_токен_бота TELEGRAM_CHANNEL_ID=ваш_id_канала
+TELEGRAM_BOT_TOKEN=ваш_токен_бота 
+```
+```
+TELEGRAM_CHANNEL_ID=ваш_id_канала
 ```
 
 
