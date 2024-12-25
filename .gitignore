@@ -13,3 +13,5 @@ htmlcov/
 .tox
 .env
 .venv/
+*mainforme.py
+
