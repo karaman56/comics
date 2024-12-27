@@ -5,8 +5,11 @@ from dotenv import load_dotenv
 import random
 
 
+
+
 def generate_comic_url():
-    random_number = random.randint(1, 3028)
+    max_comic_number = 3028
+    random_number = random.randint(1, max_comic_number)
     url = f'https://xkcd.com/{random_number}/info.0.json'
     return url
 
@@ -45,7 +48,6 @@ def run_bot():
     token = os.getenv('TELEGRAM_BOT_TOKEN')
     telegram_channel_id = os.getenv('TELEGRAM_CHANNEL_ID')
     bot = telebot.TeleBot(token)
-
     print("Бот запущен. Публикуем комикс...")
     send_comic(bot, telegram_channel_id)
     print("Комикс опубликован. Скрипт завершает работу.")
@@ -53,6 +55,7 @@ def run_bot():
 
 if __name__ == "__main__":
     run_bot()
+
 
 
 
