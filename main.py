@@ -53,9 +53,14 @@ def send_comic(bot, telegram_channel_id):
     comic_folder = create_comic_folder()
     comic_file_path = os.path.join(comic_folder, f"{comic_image_title}.png")
 
-    download_comic(comic_image_url, comic_file_path)
-    send_comic_message(bot, telegram_channel_id, comic_image_title, comic_file_path, comic_image_alt)
-    clean_up(comic_file_path)
+    try:
+        download_comic(comic_image_url, comic_file_path)
+        send_comic_message(bot, telegram_channel_id, comic_image_title, comic_file_path, comic_image_alt)
+    finally:
+        if os.path.exists(comic_file_path):
+            clean_up(comic_file_path)
+
+
 
 
 def run_bot():
