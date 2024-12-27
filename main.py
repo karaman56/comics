@@ -4,9 +4,7 @@ import requests
 from dotenv import load_dotenv
 import random
 
-
 MAX_COMIC_NUMBER = 3028
-
 
 def generate_comic_url():
     random_number = random.randint(1, MAX_COMIC_NUMBER)
@@ -75,7 +73,6 @@ def run_bot():
     print_message("Бот запущен. Публикуем комикс...")
     send_comic(bot, telegram_channel_id)
     print_message("Комикс опубликован. Скрипт завершает работу.")
-
 
 if __name__ == "__main__":
     run_bot()
