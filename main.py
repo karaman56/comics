@@ -14,11 +14,13 @@ def get_random_comic_data():
     response.raise_for_status()
     return response.json()
 
+
 def prepare_comic_file_path(comic_image_title):
     """Подготавливает путь для сохранения комикса."""
     comic_folder = 'comics'
     os.makedirs(comic_folder, exist_ok=True)
     return os.path.join(comic_folder, f"{comic_image_title}.png")
+
 
 def download_comic(comic_image_url, save_path):
     """Скачивает комикс по URL и сохраняет его по указанному пути, возвращая путь к файлу."""
@@ -28,12 +30,14 @@ def download_comic(comic_image_url, save_path):
         file.write(response.content)
     return save_path
 
+
 def send_comic(bot, telegram_channel_id, comic_image_title, comic_file_path, comic_image_alt):
     """Отправляет комикс в Telegram."""
     bot.send_message(chat_id=telegram_channel_id, text=comic_image_title)
     with open(comic_file_path, 'rb') as photo:
         bot.send_photo(chat_id=telegram_channel_id, photo=photo)
     bot.send_message(chat_id=telegram_channel_id, text=comic_image_alt)
+
 
 def fetch_comic_data():
     """Получает данные о комиксе и возвращает заголовок, URL изображения и текст комментария."""
@@ -43,13 +47,6 @@ def fetch_comic_data():
     comic_image_alt = comic_data.get('alt')
     return comic_image_title, comic_image_url, comic_image_alt
 
-def fetch_and_send_comic(bot, telegram_channel_id):
-    """Получает данные о комиксе, скачивает его и отправляет в Telegram."""
-    comic_image_title, comic_image_url, comic_image_alt = fetch_comic_data()
-    comic_file_path = prepare_comic_file_path(comic_image_title)
-    download_comic(comic_image_url, comic_file_path)
-    send_comic(bot, telegram_channel_id, comic_image_title, comic_file_path, comic_image_alt)
-    return comic_file_path
 
 def run_bot():
     """Запускает бота и отправляет комикс."""
@@ -63,10 +60,14 @@ def run_bot():
     bot = telebot.TeleBot(token)
 
     print("Бот запущен.")
-    send_comics = fetch_and_send_comic(bot, telegram_channel_id)
+
+    comic_image_title, comic_image_url, comic_image_alt = fetch_comic_data()
+    comic_file_path = prepare_comic_file_path(comic_image_title)
+    download_comic(comic_image_url, comic_file_path)
+    send_comic(bot, telegram_channel_id, comic_image_title, comic_file_path, comic_image_alt)
     try:
-        if os.path.exists(send_comics):
-            os.remove(send_comics)
+        if os.path.exists(comic_file_path):
+            os.remove(comic_file_path)
     except Exception as e:
         print(f"Ошибка при удалении файла: {e}")
 
@@ -74,6 +75,7 @@ def run_bot():
 
 if __name__ == "__main__":
     run_bot()
+
 
 
 
