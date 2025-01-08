@@ -6,6 +6,7 @@ import random
 
 MAX_COMIC_NUMBER = 3028
 
+
 def get_random_comic_data():
     """Возвращает данные о случайном комиксе."""
     random_number = random.randint(1, MAX_COMIC_NUMBER)
@@ -63,18 +64,24 @@ def run_bot():
 
     comic_image_title, comic_image_url, comic_image_alt = fetch_comic_data()
     comic_file_path = prepare_comic_file_path(comic_image_title)
-    download_comic(comic_image_url, comic_file_path)
-    send_comic(bot, telegram_channel_id, comic_image_title, comic_file_path, comic_image_alt)
+
     try:
+        download_comic(comic_image_url, comic_file_path)
+        send_comic(bot, telegram_channel_id, comic_image_title, comic_file_path, comic_image_alt)
+    finally:
         if os.path.exists(comic_file_path):
-            os.remove(comic_file_path)
-    except Exception as e:
-        print(f"Ошибка при удалении файла: {e}")
+            try:
+                os.remove(comic_file_path)
+                print(f"Временный файл {comic_file_path} удален.")
+            except Exception as e:
+                print(f"Ошибка при удалении файла: {e}")
 
     print("Комикс опубликован.")
 
+
 if __name__ == "__main__":
     run_bot()
+
 
 
 
